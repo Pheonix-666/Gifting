@@ -1,5 +1,5 @@
 /**
- * PRESTIGE & CO. — CATALOG 2026
+ * MINAL INDUSTRES — CATALOG 2026
  * Interactive Behaviors
  */
 
