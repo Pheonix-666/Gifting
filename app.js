@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFormHandling();
   initScrollToTop();
   initImageModal();
+  initVideoModal();
 });
 
 /**
@@ -193,30 +194,53 @@ function initFormHandling() {
     }
 
     const submitBtn = document.getElementById('submitInquiryBtn');
-    const originalText = submitBtn.innerHTML;
+    const originalHTML = submitBtn.innerHTML;
     
-    // Simulate loading
-    submitBtn.innerHTML = 'Sending...';
+    // Show loading state
+    submitBtn.innerHTML = 'Sending…';
     submitBtn.style.opacity = '0.7';
     submitBtn.disabled = true;
 
-    // Simulate API call
-    setTimeout(() => {
-      // Show toast
-      toast.classList.add('show');
-      
-      // Reset form & button
-      form.reset();
-      submitBtn.innerHTML = originalText;
+    // Collect form data
+    const data = {
+      name:     form.querySelector('#field-name').value,
+      org:      form.querySelector('#field-org').value,
+      email:    form.querySelector('#field-email').value,
+      qty:      form.querySelector('#field-qty').value || 'Not specified',
+      interest: form.querySelector('#field-interest').value || 'Not specified',
+      message:  form.querySelector('#field-message').value || 'No message provided',
+      _subject: 'New Inquiry — Minal Industres Catalog',
+    };
+
+    // Send via Formsubmit (no account needed — first submission will ask you to verify your email)
+    fetch('https://formsubmit.co/ajax/parthlahor@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success === 'true' || res.success === true) {
+        // ✅ Show success toast
+        toast.classList.add('show');
+        form.reset();
+        setTimeout(() => toast.classList.remove('show'), 5000);
+      } else {
+        throw new Error(res.message || 'Submission failed');
+      }
+    })
+    .catch(err => {
+      console.error('Form error:', err);
+      alert('Sorry, something went wrong. Please email us directly at gifts@minal-industres.com');
+    })
+    .finally(() => {
+      submitBtn.innerHTML = originalHTML;
       submitBtn.style.opacity = '1';
       submitBtn.disabled = false;
-
-      // Hide toast after 5s
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 5000);
-      
-    }, 1200);
+    });
   });
 }
 
@@ -251,12 +275,14 @@ function initImageModal() {
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("imageModalImg");
   const closeBtn = document.querySelector(".image-modal-close");
-  const productImages = document.querySelectorAll(".product-photo");
+  // Only target photos from regular non-video product cards
+  const productImages = document.querySelectorAll(".product-card:not([data-video]) .product-photo");
 
   if (!modal || !modalImg || !closeBtn) return;
 
   productImages.forEach(img => {
-    img.addEventListener("click", function() {
+    img.addEventListener("click", function(e) {
+      e.stopPropagation();
       modal.style.display = "block";
       modalImg.src = this.src;
     });
@@ -280,3 +306,54 @@ function initImageModal() {
     }
   });
 }
+
+/**
+ * Video Modal — click-to-play modal for video items
+ */
+function initVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const player = document.getElementById('videoModalPlayer');
+  const closeBtn = document.getElementById('videoModalClose');
+
+  if (!modal || !player || !closeBtn) return;
+
+  function closeVideoModal() {
+    modal.classList.remove('active');
+    player.pause();
+    player.src = '';
+    document.body.style.overflow = '';
+  }
+
+  closeBtn.addEventListener('click', closeVideoModal);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeVideoModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeVideoModal();
+    }
+  });
+}
+
+/**
+ * Opens the video modal for a given video card element.
+ * Called inline via onclick on [data-video] elements.
+ */
+function openVideoModal(cardEl) {
+  const modal = document.getElementById('videoModal');
+  const player = document.getElementById('videoModalPlayer');
+  if (!modal || !player) return;
+
+  const src = cardEl.getAttribute('data-video');
+  if (!src) return;
+
+  player.src = src;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  player.play().catch(() => {
+    // Some browsers require manual user play gesture
+  });
+}
+

@@ -24,7 +24,13 @@ categories = [
         "id": "desk",
         "name": "Desk & Office",
         "tagline": "Elevate the workspace",
-        "keywords": ["5.42", "05_52_26"]
+        "keywords": ["5.42"]
+    },
+    {
+        "id": "custom",
+        "name": "Bespoke & Customized Products",
+        "tagline": "Tailor-made specifically for your brand",
+        "keywords": ["ChatGPT", "05_52_26"]
     }
 ]
 
@@ -51,6 +57,12 @@ def get_product_details(cat_id, index):
             "name": f"Signature Executive Utility {index}",
             "desc": "Built for the daily commute or the morning ritual. Crafted from durable, premium materials, this essential item seamlessly blends utility with sophisticated design.",
             "specs": ["Material: Water-resistant textiles / High-fired ceramic", "Durability: Built for everyday executive use", "Design: Minimalist and functional"]
+        }
+    elif cat_id == "custom":
+        return {
+            "name": f"Bespoke Customized Product {index}",
+            "desc": "A fully tailored product designed exclusively around your brand guidelines. Features premium customization including precision engraving, custom colors, and personalized packaging.",
+            "specs": ["Material: Custom selection (Metal, Leather, Ceramic)", "Customization: Logo Engraving, UV Print, Embossing", "Packaging: Bespoke rigid box"]
         }
     else:
         return {
