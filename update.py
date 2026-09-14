@@ -21,17 +21,19 @@ for file_path in files:
 
     if 'index.html' in file_path:
         # Replace phone numbers
-        content = content.replace('+1 (800) 774-3384', '+91 9137773967')
-        content = content.replace('tel:+18007743384', 'tel:+919137773967')
+        content = content.replace('+1 (800) 774-3384', '+91 70454 47189')
+        content = content.replace('tel:+18007743384', 'tel:+917045447189')
+        content = content.replace('+91 9137773967', '+91 70454 47189')
+        content = content.replace('919137773967', '917045447189')
 
         # Add whatsapp link
-        old_phone_html = '<a href="tel:+919137773967" class="contact-link" id="phoneLink">+91 9137773967</a>'
-        new_phone_html = old_phone_html + '\n                  <a href="https://wa.me/919137773967" class="contact-link" id="whatsappLink" target="_blank">Connect on WhatsApp</a>'
+        old_phone_html = '<a href="tel:+917045447189" class="contact-link" id="phoneLink">+91 70454 47189</a>'
+        new_phone_html = old_phone_html + '\n                  <a href="https://wa.me/917045447189" class="contact-link" id="whatsappLink" target="_blank">Connect on WhatsApp</a>'
         content = content.replace(old_phone_html, new_phone_html)
 
         # Update cover footer
-        cover_footer_target = '<div class="cover-footer-bar">\n        <span>minal-industres.com</span>\n        <span>gifts@minal-industres.com</span>\n        <span>+91 9137773967</span>\n      </div>'
-        cover_footer_replacement = '<div class="cover-footer-bar">\n        <span>minal-industres.com</span>\n        <span>gifts@minal-industres.com</span>\n        <span>+91 9137773967</span>\n        <span><a href="https://wa.me/919137773967" style="color: inherit; text-decoration: underline;">WhatsApp Us</a></span>\n      </div>'
+        cover_footer_target = '<div class="cover-footer-bar">\n        <span>minal-industres.com</span>\n        <span>gifts@minal-industres.com</span>\n        <span>+91 70454 47189</span>\n      </div>'
+        cover_footer_replacement = '<div class="cover-footer-bar">\n        <span>minal-industres.com</span>\n        <span>gifts@minal-industres.com</span>\n        <span>+91 70454 47189</span>\n        <span><a href="https://wa.me/917045447189" style="color: inherit; text-decoration: underline;">WhatsApp Us</a></span>\n      </div>'
         content = content.replace(cover_footer_target, cover_footer_replacement)
 
         # Replace Catalog No
