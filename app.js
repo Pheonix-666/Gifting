@@ -2,7 +2,6 @@
  * MINAL INDUSTRES — CATALOG 2026
  * Interactive Behaviors — Fixed & Enhanced
  */
-
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initScrollAnimations();
