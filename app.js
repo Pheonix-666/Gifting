@@ -146,7 +146,7 @@ function initFormHandling() {
       _subject: 'New Inquiry — Minal Industres Catalog',
     };
 
-    fetch('https://formsubmit.co/ajax/pathlahor@gmail.com', {
+    fetch('https://formsubmit.co/ajax/parthlahor@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(data)
